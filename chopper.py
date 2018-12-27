@@ -53,7 +53,7 @@ class CHOPPER:
 			raise Exception("Unable to Spin at requested speed")
 		self.ser.write("I".encode())
 		time.sleep(self.pauseTime)
-		for i in str(val):
+		for i in str(int(val)):
 			self.ser.write(i.encode())
 			time.sleep(self.pauseTime)
 		self.ser.write("\r".encode())
