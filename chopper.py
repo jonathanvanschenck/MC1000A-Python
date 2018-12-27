@@ -9,7 +9,7 @@ class CHOPPER:
 	def __init__(self,port="COM1",verbose=False):
 		self.ser = serial.Serial(port=port,baudrate=19200,timeout=1)
 		self.verbose = verbose
-    self.pauseTime = 0.5
+    		self.pauseTime = 0.5
 		
 	def close(self):
 		self.ser.close()
