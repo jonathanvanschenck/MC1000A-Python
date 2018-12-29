@@ -6,6 +6,35 @@ Updated: 12/26/2018
 import serial, time
 
 class CHOPPER:
+	"""
+	Class to control a Thorlabs MC1000A Chopper motor.
+	Required Initalization values:
+	port:			reference to the serial port used by the computer
+	verbose:		Boolean to control if the MC1000A's responses are 
+				  echoed into the terminal.
+			 
+	Class variables:
+	.ser:			The pySerial connection to the MC1000A
+	.verbose: 		Boolean to control if the MC1000A's responses are
+				  echoed into the terminal
+	.pauseTime:		A throttle control for the serial port write rate
+				  given in seconds. Can modify as needed
+	
+	Methods:
+	.close()		Wrapper for serial.Serial.close(), closes the serial
+				  connection
+	.printTerminal()	Prints the current MC1000A termial state into the 
+				  python termial
+	.toggleSpin()		Toggles whether the chopper is spinning
+	.startSpin()		Starts chopper rotation, if currently stopped
+	.stopSpin()		Ends chopper rotation, if currently spinning
+	.getSpinMessage()	Returns True if the chopper is rotating
+	.getSpinValue()		Returns an integer with the chopping rate in Hz
+				  (NOT the rotation rate)
+	.setSpinValue(val)	Sets int(val) as the new chopping rate in Hz
+				  (NOT the rotation rate)
+	.write(message)		a
+	"""
 	def __init__(self,port="COM1",verbose=False):
 		self.ser = serial.Serial(port=port,baudrate=19200,timeout=1)
 		self.verbose = verbose
@@ -61,3 +90,12 @@ class CHOPPER:
 		mes = self.ser.read(1000).decode()
 		if self.verbose:
 			print(mes)
+			
+	def write(self,message):
+		for i in str(message):
+			time.sleep(self.pauseTime)
+			self.ser.write(i.encode())
+		time.sleep(self.pauseTime)
+		if self.verbose:
+			self.printTerminal()
+		
